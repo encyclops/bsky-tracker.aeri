@@ -213,23 +213,26 @@ function generateAllUserDataHTML(dataArray, allowed) {
         dataArray.forEach((userData) => {
             const unfoll = allowed
                 ? `<a href="javascript:void(0)" class="user-link" data-id="${userData.did}">
-                          <button class="btn btn-danger">Unfollow</button>
+                          <button class="btn btn-danger unfollow-button">Unfollow</button>
                         </a>`
                 : ``;
             html += `
         <div class="user mb-3 border p-3" id="userMain${userData.did}">
             <div class="row justify-content-between">
-              <div class="col-sm-2">
+              <div class="col-10">
+              <div class="row">
+              <div class="col-3">
                 <img src="${userData.avatar}" alt="Avatar" width="50" height="50" class="rounded-circle me-2">
-              </div>
-              <div class="col-sm-8">
-                <div class="user-info">
+                </div>
+                <div class="col-9 text-start">
                   <h6 class="fw-bold">${userData.displayName || "No display name"}</h6>
                   <p class="text-muted mb-0">@${userData.handle || "No handle"}</p>
-                  <p class="mb-0">${userData.description || "No description"}</p>
-                </div>
+                  <p class="mb-0">${userData
+                .description || "No description"}</p>
+                  </div>
+                  </div>
               </div>
-              <div class="col-sm-2 fs-2">
+              <div class="col-2 fs-2">
                 ${unfoll}
               </div>
             </div>
@@ -253,6 +256,19 @@ function generateAllUserDataHTML(dataArray, allowed) {
                 loaderDiv.style.display = "none";
             });
         });
+    });
+    updateButtonContent();
+}
+window.addEventListener("resize", updateButtonContent);
+function updateButtonContent() {
+    const buttons = document.querySelectorAll(".unfollow-button");
+    buttons.forEach((button) => {
+        if (window.innerWidth < 770) {
+            button.innerHTML = '<i class="bi bi-x-circle"></i>';
+        }
+        else {
+            button.innerHTML = "Unfollow";
+        }
     });
 }
 aBtn.onclick = async function () {

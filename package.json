@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@atproto/api": "^0.12.17",
+    "bootstrap": "^5.3.3",
     "bootstrap-icons": "^1.11.3",
     "sweetalert2": "^11.11.1"
   }

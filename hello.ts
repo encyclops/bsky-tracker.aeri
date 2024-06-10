@@ -240,7 +240,7 @@ async function fetchFollowersWithPagination(limit = 100) {
           dataArray.forEach((userData) => {
             const unfoll = allowed
               ? `<a href="javascript:void(0)" class="user-link" data-id="${userData.did}">
-                          <button class="btn btn-danger">Unfollow</button>
+                          <button class="btn btn-danger unfollow-button">Unfollow</button>
                         </a>`
               : ``;
             html += `
@@ -248,13 +248,14 @@ async function fetchFollowersWithPagination(limit = 100) {
                   userData.did
                 }">
             <div class="row justify-content-between">
-              <div class="col-sm-2">
+              <div class="col-10">
+              <div class="row">
+              <div class="col-3">
                 <img src="${
                   userData.avatar
                 }" alt="Avatar" width="50" height="50" class="rounded-circle me-2">
-              </div>
-              <div class="col-sm-8">
-                <div class="user-info">
+                </div>
+                <div class="col-9 text-start">
                   <h6 class="fw-bold">${
                     userData.displayName || "No display name"
                   }</h6>
@@ -262,11 +263,13 @@ async function fetchFollowersWithPagination(limit = 100) {
                     userData.handle || "No handle"
                   }</p>
                   <p class="mb-0">${
-                    userData.description || "No description"
+                    userData
+                    .description || "No description"
                   }</p>
-                </div>
+                  </div>
+                  </div>
               </div>
-              <div class="col-sm-2 fs-2">
+              <div class="col-2 fs-2">
                 ${unfoll}
               </div>
             </div>
@@ -291,7 +294,19 @@ async function fetchFollowersWithPagination(limit = 100) {
             });
           });
         });
+        updateButtonContent();
       }
+window.addEventListener("resize", updateButtonContent);
+function updateButtonContent() {
+    const buttons = document.querySelectorAll(".unfollow-button");
+    buttons.forEach((button) => {
+        if (window.innerWidth < 770) {
+            button.innerHTML = '<i class="bi bi-x-circle"></i>';
+        } else {
+            button.innerHTML = "Unfollow";
+        }
+    });
+}
 aBtn.onclick = async function() {
     loaderDiv.style.display = "flex";
     const data = await findUnmatchedData();
